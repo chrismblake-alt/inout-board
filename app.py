@@ -69,9 +69,9 @@ def ensure_weekly_status_sheet(spreadsheet):
     try:
         ws = spreadsheet.worksheet("Weekly Status")
     except gspread.WorksheetNotFound:
-        ws = spreadsheet.add_worksheet(title="Weekly Status", rows=200, cols=7)
-        ws.update("A1:G1", [["Week_Of", "Name", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]])
-        ws.format("A1:G1", {"textFormat": {"bold": True}})
+        ws = spreadsheet.add_worksheet(title="Weekly Status", rows=200, cols=8)
+        ws.update("A1:H1", [["Your Name", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Submission ID", "Week_Of"]])
+        ws.format("A1:H1", {"textFormat": {"bold": True}})
     return ws
 
 def ensure_desk_bookings_sheet(spreadsheet):
@@ -91,15 +91,15 @@ def load_weekly_status(ws, week_of):
     week_str = week_of.strftime("%Y-%m-%d")
     week_data = {}
     for row in records:
-        if row.get("Week_Of") == week_str:
-            name = row.get("Name", "")
+        if str(row.get("Week_Of", "")) == week_str:
+            name = row.get("Your Name", "")
             if name in TEAM:
                 week_data[name] = {
-                    "Monday": row.get("Monday", "—"),
-                    "Tuesday": row.get("Tuesday", "—"),
-                    "Wednesday": row.get("Wednesday", "—"),
-                    "Thursday": row.get("Thursday", "—"),
-                    "Friday": row.get("Friday", "—"),
+                    "Monday": row.get("Monday", "—") or "—",
+                    "Tuesday": row.get("Tuesday", "—") or "—",
+                    "Wednesday": row.get("Wednesday", "—") or "—",
+                    "Thursday": row.get("Thursday", "—") or "—",
+                    "Friday": row.get("Friday", "—") or "—",
                 }
     # Fill in missing team members
     for name in TEAM:
@@ -117,21 +117,27 @@ def save_weekly_status(ws, week_of, name, statuses_dict):
     for i, row in enumerate(records):
         if i == 0:
             continue
-        if len(row) >= 2 and row[0] == week_str and row[1] == name:
+        if len(row) >= 8 and row[0] == name and row[7] == week_str:
             row_idx = i + 1  # 1-indexed for gspread
+            break
+        # Also check if Week_Of is empty but name matches and was recently added
+        if len(row) >= 1 and row[0] == name and (len(row) < 8 or row[7] == "" or row[7] == week_str):
+            row_idx = i + 1
             break
 
     row_data = [
-        week_str, name,
+        name,
         statuses_dict.get("Monday", "—"),
         statuses_dict.get("Tuesday", "—"),
         statuses_dict.get("Wednesday", "—"),
         statuses_dict.get("Thursday", "—"),
         statuses_dict.get("Friday", "—"),
+        "",  # Submission ID (blank for manual entries)
+        week_str,
     ]
 
     if row_idx:
-        ws.update(f"A{row_idx}:G{row_idx}", [row_data])
+        ws.update(f"A{row_idx}:H{row_idx}", [row_data])
     else:
         ws.append_row(row_data)
 

@@ -62,15 +62,15 @@ def load_weekly_status(ws, week_of):
     week_str = week_of.strftime("%Y-%m-%d")
     week_data = {}
     for row in records:
-        if row.get("Week_Of") == week_str:
-            name = row.get("Name", "")
+        if str(row.get("Week_Of", "")) == week_str:
+            name = row.get("Your Name", "")
             if name in TEAM:
                 week_data[name] = {
-                    "Monday": row.get("Monday", "—"),
-                    "Tuesday": row.get("Tuesday", "—"),
-                    "Wednesday": row.get("Wednesday", "—"),
-                    "Thursday": row.get("Thursday", "—"),
-                    "Friday": row.get("Friday", "—"),
+                    "Monday": row.get("Monday", "—") or "—",
+                    "Tuesday": row.get("Tuesday", "—") or "—",
+                    "Wednesday": row.get("Wednesday", "—") or "—",
+                    "Thursday": row.get("Thursday", "—") or "—",
+                    "Friday": row.get("Friday", "—") or "—",
                 }
     for name in TEAM:
         if name not in week_data:
