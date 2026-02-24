@@ -354,33 +354,58 @@ if page == "📊 Today's Dashboard":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Status table
-    for name in TEAM:
-        status = week_data.get(name, {}).get(day_name, "—")
-        desk = desk_bookings.get(name, "") or PERMANENT_DESKS.get(name, "")
-        emoji = STATUS_EMOJI.get(status, "⚪")
-        color = STATUS_COLORS.get(status, "#9ca3af")
+    # Status table — grouped by status
+    STATUS_ORDER = ["In Office", "In Office - AM Only", "Remote", "Out", "—"]
+    STATUS_GROUP_LABELS = {
+        "In Office": "🟢 In Office",
+        "In Office - AM Only": "🟡 In Office - AM Only",
+        "Remote": "🔵 Remote",
+        "Out": "🔴 Out",
+        "—": "⚪ No Entry",
+    }
+    STATUS_GROUP_COLORS = {
+        "In Office": "#f0fdf4",
+        "In Office - AM Only": "#fffbeb",
+        "Remote": "#eff6ff",
+        "Out": "#fef2f2",
+        "—": "#f9fafb",
+    }
 
-        if status == "In Office":
+    for status_group in STATUS_ORDER:
+        members = [n for n in TEAM if week_data.get(n, {}).get(day_name, "—") == status_group]
+        if not members:
+            continue
+
+        if status_group == "In Office":
             css_class = "status-in"
-        elif status == "In Office - AM Only":
+        elif status_group == "In Office - AM Only":
             css_class = "status-am"
-        elif status == "Remote":
+        elif status_group == "Remote":
             css_class = "status-remote"
-        elif status == "Out":
+        elif status_group == "Out":
             css_class = "status-out"
         else:
             css_class = "status-none"
 
-        desk_text = f"&nbsp;&nbsp;📍 {desk}" if desk else ""
+        bg_color = STATUS_GROUP_COLORS.get(status_group, "#f9fafb")
+        label = STATUS_GROUP_LABELS.get(status_group, status_group)
 
         st.markdown(f"""
-        <div style="display:flex; align-items:center; padding:8px 12px; border-bottom:1px solid #f3f4f6;">
-            <span style="flex:1; font-size:1.05rem; font-weight:500;">{name}</span>
-            <span class="status-badge {css_class}">{status}</span>
-            <span style="min-width:100px; color:#6b7280; font-size:0.9rem;">{desk_text}</span>
+        <div style="background:{bg_color}; padding:8px 12px; border-radius:6px 6px 0 0; margin-top:12px; border-bottom:2px solid #e5e7eb;">
+            <span style="font-weight:600; font-size:0.95rem;">{label} ({len(members)})</span>
         </div>
         """, unsafe_allow_html=True)
+
+        for name in members:
+            desk = desk_bookings.get(name, "") or PERMANENT_DESKS.get(name, "")
+            desk_text = f"&nbsp;&nbsp;📍 {desk}" if desk else ""
+
+            st.markdown(f"""
+            <div style="display:flex; align-items:center; padding:8px 12px; border-bottom:1px solid #f3f4f6; background:white;">
+                <span style="flex:1; font-size:1.05rem; font-weight:500;">{name}</span>
+                <span style="min-width:100px; color:#6b7280; font-size:0.9rem;">{desk_text}</span>
+            </div>
+            """, unsafe_allow_html=True)
 
     # Desk overview
     st.markdown("<br>", unsafe_allow_html=True)

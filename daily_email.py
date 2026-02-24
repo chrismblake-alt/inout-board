@@ -101,26 +101,68 @@ def build_email_html(day_name, date, week_data, desk_bookings):
     remote = [n for n in TEAM if week_data.get(n, {}).get(day_name, "—") == "Remote"]
     out = [n for n in TEAM if week_data.get(n, {}).get(day_name, "—") == "Out"]
     no_entry = [n for n in TEAM if week_data.get(n, {}).get(day_name, "—") == "—"]
+    no_entry = [n for n in TEAM if week_data.get(n, {}).get(day_name, "—") == "—"]
 
-    # Build rows
-    rows_html = ""
-    for name in TEAM:
-        status = week_data.get(name, {}).get(day_name, "—")
-        color = status_colors.get(status, "#9ca3af")
-        desk = desk_bookings.get(name, "")
-        desk_text = f" — {desk}" if desk else ""
+    # Build grouped rows
+    status_groups = [
+        ("🟢 In Office", "#22c55e", "#f0fdf4", in_office),
+        ("🟡 AM Only", "#f59e0b", "#fffbeb", am_only),
+        ("🔵 Remote", "#3b82f6", "#eff6ff", remote),
+        ("🔴 Out", "#ef4444", "#fef2f2", out),
+        ("⚪ No Entry", "#9ca3af", "#f9fafb", no_entry),
+    ]
 
-        rows_html += f"""
+    grouped_html = ""
+    for label, color, bg, members in status_groups:
+        if not members:
+            continue
+        grouped_html += f"""
         <tr>
-            <td style="padding:8px 12px; border-bottom:1px solid #f3f4f6; font-size:14px;">{name}</td>
-            <td style="padding:8px 12px; border-bottom:1px solid #f3f4f6; text-align:center;">
-                <span style="background-color:{color}; color:white; padding:3px 10px; border-radius:4px; font-size:13px; font-weight:600;">
-                    {status}
-                </span>
+            <td colspan="2" style="padding:10px 12px; background:{bg}; font-weight:600; font-size:14px; border-bottom:1px solid #e5e7eb;">
+                {label} ({len(members)})
             </td>
-            <td style="padding:8px 12px; border-bottom:1px solid #f3f4f6; color:#6b7280; font-size:13px;">{desk_text}</td>
         </tr>
         """
+        for name in members:
+            desk = desk_bookings.get(name, "")
+            desk_text = f"📍 {desk}" if desk else ""
+            grouped_html += f"""
+            <tr>
+                <td style="padding:6px 12px 6px 24px; border-bottom:1px solid #f3f4f6; font-size:14px;">{name}</td>
+                <td style="padding:6px 12px; border-bottom:1px solid #f3f4f6; color:#6b7280; font-size:13px; text-align:right;">{desk_text}</td>
+            </tr>
+            """
+
+    # Build weekly view
+    status_short = {
+        "In Office": ("In", "#22c55e"),
+        "In Office - AM Only": ("AM", "#f59e0b"),
+        "Remote": ("Rem", "#3b82f6"),
+        "Out": ("Out", "#ef4444"),
+        "—": ("—", "#9ca3af"),
+    }
+    day_abbrevs = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+    # Determine today's column for highlighting
+    today_day = date.strftime("%A")
+
+    week_header = ""
+    for i, abbr in enumerate(day_abbrevs):
+        full_day = DAYS[i]
+        highlight = "background-color:#eff6ff;" if full_day == today_day else ""
+        bold = "<strong>" if full_day == today_day else ""
+        bold_end = "</strong>" if full_day == today_day else ""
+        week_header += f'<th style="padding:6px 4px; text-align:center; font-size:12px; color:#6b7280; border-bottom:2px solid #e5e7eb; {highlight}">{bold}{abbr}{bold_end}</th>'
+
+    week_rows = ""
+    for name in sorted(TEAM):
+        week_rows += f'<tr><td style="padding:5px 8px; border-bottom:1px solid #f3f4f6; font-size:12px;">{name}</td>'
+        for i, full_day in enumerate(DAYS):
+            s = week_data.get(name, {}).get(full_day, "—")
+            short, scolor = status_short.get(s, ("—", "#9ca3af"))
+            highlight = "background-color:#f8faff;" if full_day == today_day else ""
+            week_rows += f'<td style="padding:5px 4px; text-align:center; border-bottom:1px solid #f3f4f6; {highlight}"><span style="background:{scolor}; color:white; padding:2px 6px; border-radius:3px; font-size:11px;">{short}</span></td>'
+        week_rows += "</tr>"
 
     html = f"""
     <html>
@@ -151,15 +193,21 @@ def build_email_html(day_name, date, week_data, desk_bookings):
             </div>
 
             <table style="width:100%; border-collapse:collapse;">
-                <thead>
-                    <tr style="border-bottom:2px solid #e5e7eb;">
-                        <th style="padding:8px 12px; text-align:left; font-size:13px; color:#6b7280;">Name</th>
-                        <th style="padding:8px 12px; text-align:center; font-size:13px; color:#6b7280;">Status</th>
-                        <th style="padding:8px 12px; text-align:left; font-size:13px; color:#6b7280;">Desk</th>
-                    </tr>
-                </thead>
-                <tbody>{rows_html}</tbody>
+                <tbody>{grouped_html}</tbody>
             </table>
+
+            <div style="margin-top:24px; padding-top:16px; border-top:2px solid #e5e7eb;">
+                <h3 style="margin:0 0 12px; font-size:15px; color:#374151;">📅 This Week at a Glance</h3>
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th style="padding:6px 8px; text-align:left; font-size:12px; color:#6b7280; border-bottom:2px solid #e5e7eb;">Name</th>
+                            {week_header}
+                        </tr>
+                    </thead>
+                    <tbody>{week_rows}</tbody>
+                </table>
+            </div>
         </div>
 
         <div style="background:#f9fafb; padding:12px 24px; border:1px solid #e5e7eb; border-top:none; border-radius:0 0 10px 10px;">
