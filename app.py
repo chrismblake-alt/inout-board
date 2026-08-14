@@ -7,8 +7,8 @@ import pandas as pd
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 TEAM = [
-    "Adelaide", "Brittany", "Chris", "Daniel",
-    "Erica", "Ginny", "Karen", "Katie", "Paula"
+    "Adelaide", "Amy", "Angela", "Chris", "Daniel",
+    "Erica", "Erick", "Karen", "Katie"
 ]
 DESKS = [f"Desk {i}" for i in range(1, 9)]
 PERMANENT_DESKS = {"Chris": "Desk 8"}  # Always assigned, not bookable
