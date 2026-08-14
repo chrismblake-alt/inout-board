@@ -22,8 +22,8 @@ import os
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 TEAM = [
-    "Adelaide", "Brittany", "Chris", "Daniel",
-    "Erica", "Ginny", "Karen", "Katie", "Paula"
+    "Adelaide", "Amy", "Angela", "Chris", "Daniel",
+    "Erica", "Erick", "Karen", "Katie"
 ]
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
@@ -37,7 +37,9 @@ SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
 
 # Email recipients — add your team's email addresses here
 RECIPIENTS = [
-    "cblake@kidsincrisis.org",
+    # "chris@kidsincrisis.org",
+    # "katie@kidsincrisis.org",
+    # etc.
 ]
 
 # ── Google Sheets Connection ───────────────────────────────────────────────────
@@ -210,7 +212,7 @@ def build_email_html(day_name, date, week_data, desk_bookings):
 
         <div style="background:#f9fafb; padding:12px 24px; border:1px solid #e5e7eb; border-top:none; border-radius:0 0 10px 10px;">
             <p style="margin:0; font-size:12px; color:#9ca3af; text-align:center;">
-                Need to update your status? Visit the <a href="https://inout-board-fdu78e24bjvyservvvnrax.streamlit.app/">In/Out Board Dashboard</a>
+                Need to update your status? Visit the <a href="YOUR_STREAMLIT_APP_URL">In/Out Board Dashboard</a>
             </p>
         </div>
     </body>
