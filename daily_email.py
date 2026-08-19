@@ -37,15 +37,9 @@ SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
 
 # Email recipients — add your team's email addresses here
 RECIPIENTS = [
-    "cblake@kidsincrisis.org",
-    "amueller@kidsincrisis.org",
-    "alutz@kidsincrisis.org",
-    "afogel@kidsincrisis.org",
-    "DAssumma@kidsincrisis.org",
-    "ebates@kidsincrisis.org",
-    "eponce@kidsincrisis.org",
-    "klevine@kidsincrisis.org",
-    "ksmiley@kidsincrisis.org",
+    # "chris@kidsincrisis.org",
+    # "katie@kidsincrisis.org",
+    # etc.
 ]
 
 # ── Google Sheets Connection ───────────────────────────────────────────────────
@@ -178,6 +172,12 @@ def build_email_html(day_name, date, week_data, desk_bookings):
             <p style="margin:4px 0 0; opacity:0.9;">{date.strftime('%B %d, %Y')} — Development Team</p>
         </div>
 
+        <div style="background:#eef2ff; padding:10px 24px; border:1px solid #e5e7eb; border-top:none;">
+            <p style="margin:0; font-size:13px; color:#4338ca; text-align:center;">
+                📝 <a href="https://form.jotform.com/260537514417052" style="color:#4338ca; font-weight:600;">Update your schedule for next week</a> &nbsp;|&nbsp; 🖥️ <a href="https://inout-board-fdu78e24bjvyservvvnrax.streamlit.app/" style="color:#4338ca; font-weight:600;">Open Dashboard</a>
+            </p>
+        </div>
+
         <div style="background:white; padding:16px 24px; border:1px solid #e5e7eb;">
             <div style="display:flex; gap:16px; margin-bottom:16px; text-align:center;">
                 <div style="flex:1; padding:8px; background:#f0fdf4; border-radius:6px;">
@@ -218,7 +218,7 @@ def build_email_html(day_name, date, week_data, desk_bookings):
 
         <div style="background:#f9fafb; padding:12px 24px; border:1px solid #e5e7eb; border-top:none; border-radius:0 0 10px 10px;">
             <p style="margin:0; font-size:12px; color:#9ca3af; text-align:center;">
-                Need to choose a desk or update your status? Visit the <a href="https://inout-board-fdu78e24bjvyservvvnrax.streamlit.app/">In/Out Board Dashboard</a>
+                Need to update your status? Visit the <a href="YOUR_STREAMLIT_APP_URL">In/Out Board Dashboard</a>
             </p>
         </div>
     </body>
