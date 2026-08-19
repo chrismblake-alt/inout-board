@@ -279,7 +279,7 @@ except Exception as e:
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.title("🏢 In/Out Board")
-    st.caption("Development Team — Kids in Crisis")
+    st.caption("Third Floor — Kids in Crisis")
     st.divider()
     page = st.radio(
         "Navigate",
@@ -313,7 +313,7 @@ if page == "📊 Today's Dashboard":
     <div class="today-header">
         <h2 style="margin:0; color:white;">📊 {day_name}'s Board</h2>
         <p style="margin:0; opacity:0.9; color: #e0e0e0;">
-            {today.strftime('%B %d, %Y')} — Development Team
+            {today.strftime('%B %d, %Y')} — Third Floor
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -392,7 +392,7 @@ if page == "📊 Today's Dashboard":
 
         st.markdown(f"""
         <div style="background:{bg_color}; padding:8px 12px; border-radius:6px 6px 0 0; margin-top:12px; border-bottom:2px solid #e5e7eb;">
-            <span style="font-weight:600; font-size:0.95rem;">{label} ({len(members)})</span>
+            <span style="font-weight:600; font-size:0.95rem; color:#1f2937;">{label} ({len(members)})</span>
         </div>
         """, unsafe_allow_html=True)
 
@@ -402,7 +402,7 @@ if page == "📊 Today's Dashboard":
 
             st.markdown(f"""
             <div style="display:flex; align-items:center; padding:8px 12px; border-bottom:1px solid #f3f4f6; background:white;">
-                <span style="flex:1; font-size:1.05rem; font-weight:500;">{name}</span>
+                <span style="flex:1; font-size:1.05rem; font-weight:500; color:#1f2937;">{name}</span>
                 <span style="min-width:100px; color:#6b7280; font-size:0.9rem;">{desk_text}</span>
             </div>
             """, unsafe_allow_html=True)
