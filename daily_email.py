@@ -37,9 +37,15 @@ SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
 
 # Email recipients — add your team's email addresses here
 RECIPIENTS = [
-    # "chris@kidsincrisis.org",
-    # "katie@kidsincrisis.org",
-    # etc.
+    # "amueller@kidsincrisis.org",
+    # "alutz@kidsincrisis.org",
+    # "afogel@kidsincrisis.org",
+   # "cblake@kidsincrisis.org",
+   # "DAssumma@kidsincrisis.org",
+   # "ebates@kidsincrisis.org",
+   # "eponce@kidsincrisis.org",
+   # "klevine@kidsincrisis.org",
+   # "ksmiley@kidsincrisis.org",
 ]
 
 # ── Google Sheets Connection ───────────────────────────────────────────────────
