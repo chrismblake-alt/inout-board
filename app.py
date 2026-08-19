@@ -625,14 +625,14 @@ elif page == "📅 Weekly View":
     today_name = get_today_day_name()
 
     # Table header with today highlighted
-    header_cells = "<th style='padding:10px; text-align:left; border-bottom:2px solid #e5e7eb;'>Name</th>"
+    header_cells = "<th style='padding:10px; text-align:left; color:#1f2937; border-bottom:2px solid #e5e7eb;'>Name</th>"
     for day in DAYS:
         highlight = "background-color: #eff6ff;" if day == today_name else ""
-        header_cells += f"<th style='padding:10px; text-align:center; border-bottom:2px solid #e5e7eb; {highlight}'>{day}</th>"
+        header_cells += f"<th style='padding:10px; text-align:center; color:#1f2937; border-bottom:2px solid #e5e7eb; {highlight}'>{day}</th>"
 
     rows = ""
     for name in TEAM:
-        row_cells = f"<td style='padding:8px 10px; font-weight:500; border-bottom:1px solid #f3f4f6;'>{name}</td>"
+        row_cells = f"<td style='padding:8px 10px; font-weight:500; color:#1f2937; border-bottom:1px solid #f3f4f6;'>{name}</td>"
         for day in DAYS:
             status = week_data.get(name, {}).get(day, "—")
             highlight = "background-color: #f8faff;" if day == today_name else ""
