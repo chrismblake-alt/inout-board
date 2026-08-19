@@ -173,7 +173,7 @@ def build_email_html(day_name, date, week_data, desk_bookings):
     html = f"""
     <html>
     <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width:600px; margin:0 auto;">
-        <div style="background:linear-gradient(135deg, #3b82f6, #1d4ed8); color:white; padding:20px 24px; border-radius:10px 10px 0 0;">
+        <div style="background-color:#1d4ed8; color:white; padding:20px 24px; border-radius:10px 10px 0 0;">
             <h2 style="margin:0;">🏢 {day_name}'s In/Out Board</h2>
             <p style="margin:4px 0 0; opacity:0.9;">{date.strftime('%B %d, %Y')} — Third Floor</p>
         </div>
