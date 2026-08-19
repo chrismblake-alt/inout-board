@@ -40,7 +40,7 @@ RECIPIENTS = [
     # "amueller@kidsincrisis.org",
     # "alutz@kidsincrisis.org",
     # "afogel@kidsincrisis.org",
-   # "cblake@kidsincrisis.org",
+   "cblake@kidsincrisis.org",
    # "DAssumma@kidsincrisis.org",
    # "ebates@kidsincrisis.org",
    # "eponce@kidsincrisis.org",
