@@ -37,15 +37,15 @@ SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
 
 # Email recipients — add your team's email addresses here
 RECIPIENTS = [
-    # "amueller@kidsincrisis.org",
-    # "alutz@kidsincrisis.org",
-    # "afogel@kidsincrisis.org",
-   "cblake@kidsincrisis.org",
-   # "DAssumma@kidsincrisis.org",
-   # "ebates@kidsincrisis.org",
-   # "eponce@kidsincrisis.org",
-   # "klevine@kidsincrisis.org",
-   # "ksmiley@kidsincrisis.org",
+    "amueller@kidsincrisis.org",
+    "alutz@kidsincrisis.org",
+    "afogel@kidsincrisis.org",
+    "cblake@kidsincrisis.org",
+    "DAssumma@kidsincrisis.org",
+    "ebates@kidsincrisis.org",
+    "eponce@kidsincrisis.org",
+    "klevine@kidsincrisis.org",
+    "ksmiley@kidsincrisis.org",
 ]
 
 # ── Google Sheets Connection ───────────────────────────────────────────────────
@@ -175,12 +175,12 @@ def build_email_html(day_name, date, week_data, desk_bookings):
     <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width:600px; margin:0 auto;">
         <div style="background:linear-gradient(135deg, #3b82f6, #1d4ed8); color:white; padding:20px 24px; border-radius:10px 10px 0 0;">
             <h2 style="margin:0;">🏢 {day_name}'s In/Out Board</h2>
-            <p style="margin:4px 0 0; opacity:0.9;">{date.strftime('%B %d, %Y')} — Development Team</p>
+            <p style="margin:4px 0 0; opacity:0.9;">{date.strftime('%B %d, %Y')} — Third Floor</p>
         </div>
 
         <div style="background:#eef2ff; padding:10px 24px; border:1px solid #e5e7eb; border-top:none;">
             <p style="margin:0; font-size:13px; color:#4338ca; text-align:center;">
-                📝 <a href="https://form.jotform.com/260537514417052" style="color:#4338ca; font-weight:600;">Update your schedule for next week</a> &nbsp;|&nbsp; 🖥️ <a href="https://inout-board-fdu78e24bjvyservvvnrax.streamlit.app/" style="color:#4338ca; font-weight:600;">Open Dashboard</a>
+                📝 <a href="https://form.jotform.com/260537514417052" style="color:#4338ca; font-weight:600;">Update your schedule for next week</a> &nbsp;|&nbsp; 🖥️ <a href="https://inout-board-fdu78e24bjvyservvvnrax.streamlit.app/" style="color:#4338ca; font-weight:600;">Open Dashboard or Book a Desk</a>
             </p>
         </div>
 
@@ -224,7 +224,7 @@ def build_email_html(day_name, date, week_data, desk_bookings):
 
         <div style="background:#f9fafb; padding:12px 24px; border:1px solid #e5e7eb; border-top:none; border-radius:0 0 10px 10px;">
             <p style="margin:0; font-size:12px; color:#9ca3af; text-align:center;">
-                Need to update your status? Visit the <a href="YOUR_STREAMLIT_APP_URL">In/Out Board Dashboard</a>
+                Kids in Crisis — Third Floor In/Out Board
             </p>
         </div>
     </body>
