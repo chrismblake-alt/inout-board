@@ -452,12 +452,16 @@ elif page == "🪑 Book a Desk":
     today = datetime.now().date()
     week_monday = get_current_week_monday()
 
-    # Date selector — only show weekdays of current week
+    # Date selector — show remaining weekdays this week + all of next week
     available_dates = []
     for i in range(5):
         d = week_monday + timedelta(days=i)
         if d >= today:
             available_dates.append(d)
+
+    next_monday = get_next_week_monday()
+    for i in range(5):
+        available_dates.append(next_monday + timedelta(days=i))
 
     if not available_dates:
         st.info("No more weekdays this week. Check back Monday!")
