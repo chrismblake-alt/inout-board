@@ -10,9 +10,10 @@ TEAM = [
     "Adelaide", "Amy", "Angela", "Chris", "Daniel",
     "Erica", "Erick", "Karen", "Katie"
 ]
-DESKS = [f"Desk {i}" for i in range(1, 9)]
-PERMANENT_DESKS = {"Chris": "Desk 8"}  # Always assigned, not bookable
-BOOKABLE_DESKS = [d for d in [f"Desk {i}" for i in range(1, 9)] if d not in PERMANENT_DESKS.values()]
+DESKS = [f"Desk {i}" for i in range(1, 10)]
+PERMANENT_DESKS = {"Chris": "Desk 9"}  # Always assigned, not bookable
+LAST_RESORT_DESKS = {"Desk 8": "⚠️ Chris's office — available but may need to vacate for meetings"}
+BOOKABLE_DESKS = [d for d in [f"Desk {i}" for i in range(1, 10)] if d not in PERMANENT_DESKS.values()]
 STATUSES = ["In Office", "In Office - AM Only", "Remote", "Out"]
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
@@ -500,26 +501,32 @@ elif page == "🪑 Book a Desk":
                 break
 
         occupant = taken_desks.get(desk) if not perm_occupant else None
+        is_last_resort = desk in LAST_RESORT_DESKS
 
         with desk_cols[i]:
             if perm_occupant:
                 st.markdown(f"""<div class="desk-taken" style="border-color:#7c3aed; background-color:#f5f3ff;">
-                    <div style="font-weight:600;">{desk}</div>
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
                     <div style="color:#7c3aed; font-size:0.85rem;">🔒 {perm_occupant}</div>
                 </div>""", unsafe_allow_html=True)
             elif occupant == who:
                 st.markdown(f"""<div class="desk-taken" style="border-color:#3b82f6; background-color:#eff6ff;">
-                    <div style="font-weight:600;">{desk}</div>
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
                     <div style="color:#3b82f6; font-size:0.85rem;">📍 You</div>
                 </div>""", unsafe_allow_html=True)
             elif occupant:
                 st.markdown(f"""<div class="desk-taken">
-                    <div style="font-weight:600;">{desk}</div>
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
                     <div style="color:#ef4444; font-size:0.85rem;">🔴 {occupant}</div>
+                </div>""", unsafe_allow_html=True)
+            elif is_last_resort:
+                st.markdown(f"""<div class="desk-available" style="border-color:#f59e0b; background-color:#fffbeb;">
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
+                    <div style="color:#f59e0b; font-size:0.75rem;">⚠️ Last resort</div>
                 </div>""", unsafe_allow_html=True)
             else:
                 st.markdown(f"""<div class="desk-available">
-                    <div style="font-weight:600;">{desk}</div>
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
                     <div style="color:#22c55e; font-size:0.85rem;">✅ Open</div>
                 </div>""", unsafe_allow_html=True)
 
@@ -528,8 +535,10 @@ elif page == "🪑 Book a Desk":
     if has_permanent:
         st.info(f"You're permanently assigned to **{PERMANENT_DESKS[who]}** — no booking needed!")
     else:
-        # Booking actions — only show bookable desks
-        available_desks = [d for d in BOOKABLE_DESKS if d not in taken_desks or taken_desks[d] == who]
+        # Booking actions — only show bookable desks, last resort at the bottom
+        regular_desks = [d for d in BOOKABLE_DESKS if d not in taken_desks or taken_desks[d] == who if d not in LAST_RESORT_DESKS]
+        last_resort = [d for d in BOOKABLE_DESKS if d not in taken_desks or taken_desks[d] == who if d in LAST_RESORT_DESKS]
+        available_desks = regular_desks + last_resort
 
         col1, col2 = st.columns(2)
         with col1:
@@ -537,6 +546,7 @@ elif page == "🪑 Book a Desk":
                 "Choose a desk",
                 ["None"] + available_desks,
                 index=(available_desks.index(my_current_desk) + 1) if my_current_desk in available_desks else 0,
+                format_func=lambda d: f"{d} ⚠️ (last resort — private office)" if d in LAST_RESORT_DESKS else d,
             )
 
         with col2:
