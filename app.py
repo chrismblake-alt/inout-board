@@ -446,7 +446,7 @@ if page == "📊 Today's Dashboard":
             else:
                 st.markdown(f"""<div class="desk-available">
                     <div style="font-weight:600; color:#1f2937;">{desk}</div>
-                    <div style="color:#22c55e; font-size:0.85rem;">✅ Available</div>
+                    <div style="color:#22c55e; font-size:0.7rem;">✅ Available</div>
                 </div>""", unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
