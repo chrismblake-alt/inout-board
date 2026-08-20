@@ -411,7 +411,7 @@ if page == "📊 Today's Dashboard":
     # Desk overview
     st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("🪑 Today's Desk Assignments")
-    desk_cols = st.columns(min(len(DESKS), 8))
+    desk_cols = st.columns(min(len(DESKS), 10))
     for i, desk in enumerate(DESKS):
         # Check permanent assignment first
         perm_occupant = None
@@ -430,17 +430,22 @@ if page == "📊 Today's Dashboard":
         with desk_cols[i]:
             if perm_occupant:
                 st.markdown(f"""<div class="desk-taken" style="border-color:#7c3aed; background-color:#f5f3ff;">
-                    <div style="font-weight:600;">{desk}</div>
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
                     <div style="color:#7c3aed; font-size:0.85rem;">🔒 {perm_occupant}</div>
                 </div>""", unsafe_allow_html=True)
             elif occupant:
                 st.markdown(f"""<div class="desk-taken">
-                    <div style="font-weight:600;">{desk}</div>
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
                     <div style="color:#ef4444; font-size:0.85rem;">🔴 {occupant}</div>
+                </div>""", unsafe_allow_html=True)
+            elif desk in LAST_RESORT_DESKS:
+                st.markdown(f"""<div class="desk-available" style="border-color:#f59e0b; background-color:#fffbeb;">
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
+                    <div style="color:#f59e0b; font-size:0.75rem;">⚠️ Last resort</div>
                 </div>""", unsafe_allow_html=True)
             else:
                 st.markdown(f"""<div class="desk-available">
-                    <div style="font-weight:600;">{desk}</div>
+                    <div style="font-weight:600; color:#1f2937;">{desk}</div>
                     <div style="color:#22c55e; font-size:0.85rem;">✅ Available</div>
                 </div>""", unsafe_allow_html=True)
 
@@ -481,7 +486,7 @@ elif page == "🪑 Book a Desk":
 
     # Show desk grid
     st.markdown("#### Available Desks")
-    desk_cols = st.columns(min(len(DESKS), 8))
+    desk_cols = st.columns(min(len(DESKS), 10))
 
     taken_desks = {}
     for person, desk in bookings.items():
