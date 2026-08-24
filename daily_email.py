@@ -26,6 +26,7 @@ TEAM = [
     "Erica", "Erick", "Karen", "Katie"
 ]
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+PERMANENT_DESKS = {"Chris": "Desk 9"}
 
 # Load from environment variables (set in GitHub Actions secrets or .env)
 GCP_CREDS = os.environ.get("GCP_SERVICE_ACCOUNT")
@@ -46,8 +47,6 @@ RECIPIENTS = [
     "eponce@kidsincrisis.org",
     "klevine@kidsincrisis.org",
     "ksmiley@kidsincrisis.org",
-    "sshapiro@kidsincrisis.org",
-  "amagowan@kidsincrisis.org",
 ]
 
 # ── Google Sheets Connection ───────────────────────────────────────────────────
@@ -89,6 +88,9 @@ def load_desk_bookings(ws, date):
     records = ws.get_all_records()
     date_str = date.strftime("%Y-%m-%d")
     bookings = {}
+    # Add permanent desks first
+    bookings.update(PERMANENT_DESKS)
+    # Then add bookings from sheet (overrides if someone booked differently)
     for row in records:
         if row.get("Date") == date_str:
             bookings[row.get("Name")] = row.get("Desk")
