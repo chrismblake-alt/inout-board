@@ -47,6 +47,7 @@ RECIPIENTS = [
     "klevine@kidsincrisis.org",
     "ksmiley@kidsincrisis.org",
     "sshapiro@kidsincrisis.org",
+  "amagowan@kidsincrisis.org",
 ]
 
 # ── Google Sheets Connection ───────────────────────────────────────────────────
